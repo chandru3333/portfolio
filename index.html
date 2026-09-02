@@ -1577,9 +1577,10 @@ footer {
     gap: 24px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding: 14px 4px 28px 4px;   /* ✅ top/bottom padding so lift & shadow aren't clipped */
-    margin: -14px 0 -10px 0;      /* ✅ compensates so layout spacing stays the same */
+    padding: 24px 24px 40px 8px;
+    margin: -24px 0 -22px 0;
 }
+
 
 .cert-grid::-webkit-scrollbar {
     height: 6px;
@@ -1615,8 +1616,12 @@ footer {
 .cert-card:hover {
     border-color: var(--accent);
     transform: translateY(-6px);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, .25);
+    box-shadow: 0 0 0 1px rgba(231, 111, 81, .15),
+                0 8px 24px rgba(231, 111, 81, .18),
+                0 24px 60px rgba(0, 0, 0, .18);
 }
+
+
 
 .cert-card .ribbon {
     position: absolute;
