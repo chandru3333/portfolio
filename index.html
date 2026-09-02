@@ -1478,7 +1478,7 @@ footer {
     <div id="progress"></div>
 
     <nav id="mainNav">
-        <a class="logo" href="#top">B.Chandru<span style="color:var(--accent)">.</span></a>
+        <a class="logo" href="#top">B Chandru<span style="color:var(--accent)">.</span></a>
         <ul>
             <li><a href="#about">About</a></li>
             <li><a href="#projects">Projects</a></li>
@@ -1518,7 +1518,7 @@ footer {
 					<a class="btn fill" id="heroResume" href="resume.pdf" download="B_Chandru_Resume.pdf">Download Resume</a>
                 </div>
             </div>
-            <img src="profile.jpg" alt="Arjun Mehta" class="hero-photo">
+            <img src="profile.jpg" alt="B Chandru" class="hero-photo">
         </div>
 
     </header>
@@ -1776,10 +1776,10 @@ footer {
             <div id="status" aria-live="polite"></div>
         </form>
     </section>
+<footer>
+    <p>© 2025 B Chandru · <a href="mailto:mrbchandru2003@gmail.com">mchandru2003@gmail.com</a> · Built with care</p>
+</footer>
 
-    <footer>
-        <p>© 2025 Arjun Mehta · <a href="mailto:hello@arjunmehta.design">hello@arjunmehta.design</a> · Built with care</p>
-    </footer>
 
     <button id="toTop" aria-label="Back to top">↑</button>
     <div id="toast"></div>
@@ -1788,25 +1788,27 @@ footer {
         /* ================= THEME — works from burger menu ================= */
 /* ================= THEME ================= */
 /* ================= THEME ================= */
+/* ================= THEME ================= */
 const htmlEl = document.documentElement;
 const themeBtnMenu = document.getElementById('themeToggleMenu');
-const themeBtnDesk = document.getElementByIdthemeToggleDesk');
+const themeBtnDesk = document.getElementById('themeToggleDesk');
 
 function applyTheme(dark) {
-    htmlEl.classList.toggle('light', !dark);
+    htmlEl.classList.toggle('light', !);
     if (themeBtnMenu) themeBtnMenu.textContent = (dark ? '☀️' : '🌙') + ' Theme';
-    (themeBtnDesk) themeBtnDesk.textContent = dark ? '☀️' : '🌙';   // ✅ .textContent
+    if (themeBtnDesk) themeBtnDesk.textContent = dark ? '☀️' : '🌙';   // ✅ has "if"
     localStorage.setItem('theme', dark ? 'dark' : 'light');
 }
 
 applyTheme(localStorage.getItem('theme') !== 'light');
 
 const toggleTheme = e => {
- if (e) e.stopPropagation();
+    if (e) e.stopPropagation();
     applyTheme(htmlEl.classList.contains('light'));
 };
-if (themeBtnMenu) themeBtnMenu.addEventListener('click', toggleTheme);   // ✅ themeBtnMenu
+if (themeBtnMenu) themeBtnMenu.addEventListener('click',Theme);
 if (themeBtnDesk) themeBtnDesk.addEventListener('click', toggleTheme);
+
 
 
 
