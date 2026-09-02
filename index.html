@@ -1482,10 +1482,6 @@ footer {
    			 <button class="theme-btn" id="themeToggleDesk" aria-label="Toggle theme">🌙</button>
    			 <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
 		</div>
-
-        <div class="nav-right">
-            <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
-        </div>
     </nav>
 
     <div class="mobile-menu" id="mobileMenu">
@@ -1781,25 +1777,27 @@ footer {
     <script>
         /* ================= THEME — works from burger menu ================= */
 /* ================= THEME ================= */
+/* ================= THEME ================= */
 const htmlEl = document.documentElement;
 const themeBtnMenu = document.getElementById('themeToggleMenu');
-const themeBtnDesk = document.getElementById('themeToggleDesk');
+const themeBtnDesk = document.getElementByIdthemeToggleDesk');
 
 function applyTheme(dark) {
     htmlEl.classList.toggle('light', !dark);
     if (themeBtnMenu) themeBtnMenu.textContent = (dark ? '☀️' : '🌙') + ' Theme';
-    if (themeBtnDesk) themeBtnDesk = dark ? '☀️' : '🌙';
+    (themeBtnDesk) themeBtnDesk.textContent = dark ? '☀️' : '🌙';   // ✅ .textContent
     localStorage.setItem('theme', dark ? 'dark' : 'light');
 }
 
 applyTheme(localStorage.getItem('theme') !== 'light');
 
 const toggleTheme = e => {
-    if (e) e.stopPropagation();
+ if (e) e.stopPropagation();
     applyTheme(htmlEl.classList.contains('light'));
 };
-if (BtnMenu) themeBtnMenu.addEventListener('click', toggleTheme);
+if (themeBtnMenu) themeBtnMenu.addEventListener('click', toggleTheme);   // ✅ themeBtnMenu
 if (themeBtnDesk) themeBtnDesk.addEventListener('click', toggleTheme);
+
 
 
 
