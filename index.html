@@ -67,6 +67,20 @@
     margin-top: 10px;
     white-space: nowrap;
   }
+	    .cert-grid {
+        flex-direction: column;    /* stack down by down */
+        overflow-x: visible;       /* kill horizontal scroll */
+        scroll-snap-type: none;
+        gap: 16px;
+        padding-bottom: 0;
+    }
+
+    .cert-card {
+        flex: none;
+        min-width: 0;
+        width: 100%;
+        padding: 24px 22px;
+    }
 }
         html.light {
             --bg: #F6F3EC;
@@ -1570,6 +1584,33 @@ footer {
 }
 .theme-btn:hover{border-color:var(--accent);transform:rotate(20deg)}
 @media(max-width:900px){ .theme-btn{display:none} } /* mobile uses burger-menu button */
+/* ---------- CERTIFICATES (horizontal scroll on desktop, stacked on mobile) ---------- */
+.cert-grid {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;              /* horizontal scroll on desktop */
+    scroll-snap-type: x mandatory; /* snaps cards while scrolling */
+    padding-bottom: 18px;          /* room for scrollbar */
+}
+
+/* nicer scrollbar */
+.cert-grid::-webkit-scrollbar {
+    height: 6px;
+}
+.cert-grid::-webkit-scrollbar-track {
+    background: var(--line);
+    border-radius: 6px;
+}
+.cert-grid::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 6px;
+}
+.cert-card {
+    /* ...existing styles stay... */
+    flex: 0 0 300px; /* ✅ ADD — fixed width so cards line up in the scroll row */
+    scroll-snap-align: start;
+    min-width: 300px;
+}
 
 
     </style>
@@ -1836,6 +1877,33 @@ footer {
 
         </div>
     </section>
+
+	<!-- 06 — CERTIFICATES -->
+<section id="certificates">
+    <div class="sec-label reveal">06 — Certifications</div>
+    <h2 class="reveal">Credentials I've earned.</h2>
+    <div class="cert-grid">
+        <a class="cert-card reveal" href="LINK" target="_blank" rel="noopener">
+		  <div class="ribbon">Certified</div>
+		  <div class="icon">☕</div>
+		  <h3>Java for Beginners</h3>
+		  <div class="issuer">Udemy — Navin Reddy</div>
+		  <div class="desc">Gained hands-on experience in OOPs, Exception Handling, Collections API, and writing clean, maintainable Java code.</div>
+		  <div class="date">Issued Jun 2026</div>
+		</a>
+		
+		<a class="cert-card reveal" href="LINK" target="_blank" rel="noopener">
+		  <div class="ribbon">Certified</div>
+		  <div class="icon">☁️</div>
+		  <h3>Salesforce Developer Internship</h3>
+		  <div class="issuer">Internship Credential</div>
+		  <div class="desc">Developed custom Apex triggers, configured custom Salesforce objects, and automated workflow rules for CRM lead management.</div>
+		  <div class="date">Issued Oct 2022</div>
+		</a>
+        <!-- repeat for each certificate -->
+    </div>
+</section>
+
     <!-- 06 — SOCIALS -->
     <!-- 06 — SOCIALS -->
 <section id="connect">
@@ -1892,7 +1960,7 @@ footer {
         </form>
     </section>
 <footer>
-    <p>© 2025 B Chandru · <a href="mailto:mrbchandru2003@gmail.com">mchandru2003@gmail.com</a> · Built with care</p>
+    <p>© <span id="year"></span> B Chandru · <a href="mailto:mrbchandru2003@gmail.com">mchandru2003@gmail.com</a> · Built with care</p>
 </footer>
 
 
@@ -1900,6 +1968,9 @@ footer {
     <div id="toast"></div>
 
 <script>
+	/* ============ AUTO YEAR ============ */
+document.getElementById('year').textContent = new Date().getFullYear();
+
 /* ============ THEME ============ */
 const htmlEl = document.documentElement;
 const themeBtnMenu = document.getElementById('themeToggleMenu');
