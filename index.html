@@ -1784,10 +1784,8 @@ footer {
     <button id="toTop" aria-label="Back to top">↑</button>
     <div id="toast"></div>
 
-    <script>
-        /* ================= THEME — works from burger menu ================= */
-/* ================= THEME ================= */
-/* ================= THEME ================= */
+<script>
+/* ============ THEME ============ */
 const htmlEl = document.documentElement;
 const themeBtnMenu = document.getElementById('themeToggleMenu');
 const themeBtnDesk = document.getElementById('themeToggleDesk');
@@ -1798,44 +1796,36 @@ function applyTheme(dark) {
     if (themeBtnDesk) themeBtnDesk.textContent = dark ? '☀️' : '🌙';
     localStorage.setItem('theme', dark ? 'dark' : 'light');
 }
-
 applyTheme(localStorage.getItem('theme') !== 'light');
 
 function toggleTheme(e) {
     if (e) e.stopPropagation();
     applyTheme(htmlEl.classList.contains('light'));
 }
-
 if (themeBtnMenu) themeBtnMenu.addEventListener('click', toggleTheme);
 if (themeBtnDesk) themeBtnDesk.addEventListener('click', toggleTheme);
 
+/* ============ MOBILE MENU ============ */
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+const mainNav = document.getElementById('mainNav');
 
+function closeMenu() {
+    burger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+}
+burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
+/* ============ ROLE ROTATOR ============ */
+const roles = ['end-to-end web applications.', 'scalable REST APIs.', 'seamless user interfaces.', 'optimized database solutions.', 'automated CI/CD pipelines.', 'custom workflow automations.', 'clean, maintainable Java code.'];
+const rot = document.getElementById('rotator');
+const cur = document.getElementById('cursor');
+let ri = 0, ci = 0, del = false;
 
-
-
-        /* ================= MOBILE MENU ================= */
-        const burger = document.getElementById('burger');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mainNav = document.getElementById('mainNav');
-
-        function closeMenu() {
-            burger.classList.remove('open');
-            mobileMenu.classList.remove('open');
-        }
-        burger.addEventListener('click', () => {
-            burger.classList.toggle('open');
-            mobileMenu.classList.toggle('open');
-        });
-        mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-
-        /* ================= ROLE ROTATOR ================= */
-        const roles = ['end-to-end web applications.', 'scalable REST APIs.', 'seamless user interfaces.', 'optimized database solutions.', 'automated CI/CD pipelines.', 'custom workflow automations.', 'clean, maintainable Java code.'];
-        const rot = document.getElementById('rotator'),
-            cur = document.getElementById('cursor');
-        let ri = 0,
-            ci = 0,
-            del = false;
 function typeLoop() {
     const word = roles[ri];
     if (!del) {
@@ -1856,174 +1846,145 @@ function typeLoop() {
     setTimeout(typeLoop, del ? 80 : 150);
 }
 typeLoop();
+setInterval(() => {
+    cur.style.opacity = cur.style.opacity === '0' ? '1' : '0';
+}, 500);
 
+/* ============ MARQUEE ============ */
+const words = ['Java Full Stack', 'Spring Boot', 'REST APIs', 'MySQL', 'Docker', 'Jenkins CI/CD'];
+document.getElementById('marquee').innerHTML =
+    Array(2).fill(words.map(w => `<span>${w}</span><span>✦</span>`).join('')).join('');
 
-
+/* ============ SCROLL REVEAL ============ */
+const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.classList.add('in');
+            io.unobserve(e.target);
         }
-        typeLoop();
-        setInterval(() => {
-            cur.style.opacity = cur.style.opacity === '0' ? '1' : '0';
-        }, 500);
+    });
+}, { threshold: .15 });
+document.querySelectorAll('.reveal, .skill-row').forEach(el => io.observe(el));
 
-        /* ================= MARQUEE ================= */
-        const words = ['Product Design', 'UX Strategy', 'Design Systems', 'Prototyping', 'User Research', 'Visual Craft'];
-        document.getElementById('marquee').innerHTML =
-            Array(2).fill(words.map(w => `<span>${w}</span><span>✦</span>`).join('')).join('');
+/* ============ PROGRESS + NAV + BACK TO TOP ============ */
+const progress = document.getElementById('progress');
+const toTop = document.getElementById('toTop');
+const navLinks = [...document.querySelectorAll('nav ul a')];
+const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+let lastY = 0;
 
-        /* ================= SCROLL REVEAL ================= */
-        const io = new IntersectionObserver(entries => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('in');
-                    io.unobserve(e.target);
-                }
-            });
-        }, {
-            threshold: .15
-        });
-        document.querySelectorAll('.reveal, .skill-row').forEach(el => io.observe(el));
+window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    const h = document.documentElement;
 
-     
-        /* ================= PROGRESS + BACK TO TOP + ACTIVE NAV + AUTO-HIDE HEADER ================= */
-        const progress = document.getElementById('progress');
-        const toTop = document.getElementById('toTop');
-        const navLinks = [...document.querySelectorAll('nav ul a')];
-        const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-        let lastY = 0;
+    progress.style.width = (y / (h.scrollHeight - h.clientHeight) * 100) + '%';
+    toTop.classList.toggle('show', y > 600);
 
-        window.addEventListener('scroll', () => {
-            const y = window.scrollY;
-            const h = document.documentElement;
+    if (y > 120 && y > lastY) {
+        mainNav.classList.add('hidden');
+    } else {
+        mainNav.classList.remove('hidden');
+    }
+    lastY = y;
 
-            progress.style.width = (y / (h.scrollHeight - h.clientHeight) * 100) + '%';
-            toTop.classList.toggle('show', y > 600);
+    const pos = y + 120;
+    let current = -1;
+    sections.forEach((s, i) => {
+        if (s.offsetTop <= pos) current = i;
+    });
+    navLinks.forEach((a, i) => a.classList.toggle('active', i === current));
+}, { passive: true });
 
-            /* auto-hide header: hide on scroll down, show on scroll up */
-            if (y > 120 && y > lastY) {
-                mainNav.classList.add('hidden');
-            } else {
-                mainNav.classList.remove('hidden');
-            }
-            lastY = y;
+toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-            const pos = y + 120;
-            let current = -1;
-            sections.forEach((s, i) => {
-                if (s.offsetTop <= pos) current = i;
-            });
-            navLinks.forEach((a, i) => a.classList.toggle('active', i === current));
-        }, {
-            passive: true
-        });
-
-        toTop.addEventListener('click', () => window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        }));
-
-// ---- helper: little confetti burst inside the button ----
-function confettiBurst(btn){
-  const colors = ['#E76F51','#E9C46A','#2A9D8F','#F4A261','#F3EFE4'];
-  for(let i = 0; i < 10; i++){
-    const c = document.createElement('span');
-    c.className = 'confetti';
-    c.style.background = colors[i % colors.length];
-    c.style.setProperty('--x', (Math.random()*120-60)+'px');   // random X spread
-    c.style.setProperty('--y', (Math.random()*80-40)+'px');    // random Y spread
-    c.style.borderRadius = Math.random() > .5 ? '50%' : '2px'; // mix dots & squares
-    btn.appendChild(c);
-    setTimeout(() => c.remove(), 750);
-  }
+/* ============ CONFETTI HELPER ============ */
+function confettiBurst(btn) {
+    const colors = ['#E76F51', '#E9C46A', '#2A9D8F', '#F4A261', '#F3EFE4'];
+    for (let i = 0; i < 10; i++) {
+        const c = document.createElement('span');
+        c.className = 'confetti';
+        c.style.background = colors[i % colors.length];
+        c.style.setProperty('--x', (Math.random() * 120 - 60) + 'px');
+        c.style.setProperty('--y', (Math.random() * 80 - 40) + 'px');
+        c.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+        btn.appendChild(c);
+        setTimeout(() => c.remove(), 750);
+    }
 }
 
-// ---- Copy email ----
+/* ============ COPY EMAIL ============ */
 const copyBtn = document.getElementById('copyEmail');
 copyBtn.addEventListener('click', () => {
-  navigator.clipboard.writeText('mrbchandru2003@gmail.com').then(() => {
-    const original = copyBtn.innerHTML;
-    copyBtn.classList.add('btn-feedback');
-    copyBtn.innerHTML = '<span class="emoji">🎉</span> Copied! Yay!';
-    copyBtn.style.background = 'var(--teal)';
-    copyBtn.style.borderColor = 'var(--teal)';
-    confettiBurst(copyBtn);
-    setTimeout(() => {
-      copyBtn.innerHTML = original;
-      copyBtn.style.background = '';
-      copyBtn.style.borderColor = '';
-      copyBtn.classList.remove('btn-feedback');
-    }, 2200);
-  });
+    navigator.clipboard.writeText('mrbchandru2003@gmail.com').then(() => {
+        const original = copyBtn.innerHTML;
+        copyBtn.classList.add('btn-feedback');
+        copyBtn.innerHTML = '<span class="emoji">🎉</span> Copied! Yay!';
+        copyBtn.style.background = 'var(--teal)';
+        copyBtn.style.borderColor = 'var(--teal)';
+        confettiBurst(copyBtn);
+        setTimeout(() => {
+            copyBtn.innerHTML = original;
+            copyBtn.style.background = '';
+            copyBtn.style.borderColor = '';
+            copyBtn.classList.remove('btn-feedback');
+        }, 2200);
+    });
 });
 
-// ---- Download resume ----
-// ---- Download resume (shared by all buttons) ----
+/* ============ RESUME DOWNLOAD ============ */
 function setupDownload(btnId) {
-  const btn = document.getElementById(btnId);
-  if (!btn) return;                             // skip if button doesn't exist
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
 
-  btn.addEventListener('click', (e) => {
-    if (btn.disabled) { e.preventDefault(); return; }  // block double-clicks
+    btn.addEventListener('click', (e) => {
+        if (btn.disabled) { e.preventDefault(); return; }
 
-    const original = btn.innerHTML;             // save ORIGINAL first, always
-    const reset = () => {                       // one function that restores everything
-      btn.innerHTML = original;
-      btn.style.color = '';
-      btn.style.borderColor = '';
-      btn.disabled = false;
-    };
+        const original = btn.innerHTML;
+        const reset = () => {
+            btn.innerHTML = original;
+            btn.style.color = '';
+            btn.style.borderColor = '';
+            btn.disabled = false;
+        };
 
-    btn.innerHTML = '<span class="emoji">🚀</span> Downloading!';
-    btn.disabled = true;
+        btn.innerHTML = '<span class="emoji">🚀</span> Downloading!';
+        btn.disabled = true;
 
-    fetch('resume.pdf')
-      .then(res => {
-        if (!res.ok) throw new Error('not found');
-        return res.blob();
-      })
-      .then(blob => {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'B_Chandru_Resume.pdf';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
+        fetch('resume.pdf')
+            .then(res => {
+                if (!res.ok) throw new Error('not found');
+                return res.blob();
+            })
+            .then(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'B_Chandru_Resume.pdf';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
 
-        btn.innerHTML = '<span class="emoji">🎉</span> Downloaded!';
-        btn.style.color = 'var(--teal)';
-        btn.style.borderColor = 'var(--teal)';
-        setTimeout(reset, 2000);
-      })
-      .catch(() => {
-        btn.innerHTML = '<span class="emoji">⚠️</span> File not found';
-        btn.style.color = 'var(--accent)';
-        setTimeout(reset, 2000);
-      });
+                btn.innerHTML = '<span class="emoji">🎉</span> Downloaded!';
+                btn.style.color = 'var(--teal)';
+                btn.style.borderColor = 'var(--teal)';
+                setTimeout(reset, 2000);
+            })
+            .catch(() => {
+                btn.innerHTML = '<span class="emoji">⚠️</span> File not found';
+                btn.style.color = 'var(--accent)';
+                setTimeout(reset, 2000);
+            });
 
-    e.preventDefault();   // stop the <a> from also navigating (avoids double download)
-  });
+        e.preventDefault();
+    });
 }
+setupDownload('downloadResume');
+setupDownload('heroResume');
 
-setupDownload('downloadResume');  // bottom button (existing)
-setupDownload('heroResume');      // top button (new)
-
-
-
-
-        /* ================= TOAST ================= */
-        const toast = document.getElementById('toast');
-
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        /* ================= CONTACT FORM — FORMSPREE ================= */
-      /* ============ CONTACT FORM – WEB3FORMS ============ */
+/* ============ CONTACT FORM — WEB3FORMS ============ */
 const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
-const ACCESS_KEY = 'd79c7fbe-9ba4-4e72-9e9c-96c10db01715';  // ← from web3forms.com
+const ACCESS_KEY = 'd79c7fbe-9ba4-4e72-9e9c-96c10db01715';
 
 const form = document.getElementById('contactForm');
 const statusEl = document.getElementById('status');
@@ -2057,76 +2018,71 @@ form.addEventListener('submit', async e => {
     statusEl.textContent = '';
     statusEl.className = '';
 
-    // send in background — no redirect, no email app
-  sendBtn.disabled = true;
-sendBtn.innerHTML = 'Sending<span class="dots"><span>·</span><span>·</span><span>·</span></span>';
+    sendBtn.disabled = true;
+    sendBtn.innerHTML = 'Sending<span class="dots"><span>·</span><span>·</span><span>·</span></span>';
 
-try {
-    const res = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            access_key: ACCESS_KEY,
-            name: name.value.trim(),
-            email: email.value.trim(),
-            message: msg.value.trim()
-        })
-    });
-    const data = await res.json();
-    if (!data.success) throw new Error();
+    try {
+        const res = await fetch(FORM_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                access_key: ACCESS_KEY,
+                name: name.value.trim(),
+                email: email.value.trim(),
+                message: msg.value.trim()
+            })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error();
 
-    /* 🚀 STAGE 1: rocket launches off the button */
-    sendBtn.classList.add('btn-progress');
-    sendBtn.innerHTML = '<span class="rocket">🚀</span> Sending';
-    await new Promise(r => setTimeout(r, 1000));
+        sendBtn.classList.add('btn-progress');
+        sendBtn.innerHTML = '<span class="rocket">🚀</span> Sending';
+        await new Promise(r => setTimeout(r, 1000));
 
-    /* ✅ STAGE 2: success — pop, shake, glow */
-    sendBtn.classList.remove('btn-progress');
-    sendBtn.innerHTML = '<span class="emoji pop">✅</span> Message Sent!';
-    sendBtn.classList.add('shake', 'glow');
-    if (typeof confettiBurst === 'function') confettiBurst(sendBtn);
+        sendBtn.classList.remove('btn-progress');
+        sendBtn.innerHTML = '<span class="emoji">✅</span> Message Sent!';
+        sendBtn.classList.add('shake', 'glow');
+        confettiBurst(sendBtn);
 
-    /* 🎆 STAGE 3: emoji fireworks rain from top of screen */
-    const emojis = ['🎉','🎊','✨','💌','⭐','🥳','💫'];
-    for (let i = 0; i < 12; i++) {
+        const emojis = ['🎉', '🎊', '✨', '💌', '⭐', '🥳', '💫'];
+        for (let i = 0; i < 12; i++) {
+            setTimeout(() => {
+                const fw = document.createElement('span');
+                fw.className = 'fw';
+                fw.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                fw.style.left = Math.random() * 100 + 'vw';
+                document.body.appendChild(fw);
+                setTimeout(() => fw.remove(), 1600);
+            }, i * 120);
+        }
+
+        const banner = document.createElement('div');
+        banner.className = 'success-banner';
+        banner.textContent = '🏆 Message delivered successfully!';
+        document.body.appendChild(banner);
+        setTimeout(() => banner.remove(), 2800);
+
+        statusEl.textContent = 'Message sent successfully. Thank you!';
+        statusEl.className = 'ok';
+        form.reset();
+
         setTimeout(() => {
-            const fw = document.createElement('span');
-            fw.className = 'fw';
-            fw.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            fw.style.left = Math.random() * 100 + 'vw';
-            document.body.appendChild(fw);
-            setTimeout(() => fw.remove(), 1600);
-        }, i * 120);
-    }
+            sendBtn.disabled = false;
+            sendBtn.innerHTML = 'Send Message →';
+            sendBtn.classList.remove('shake', 'glow');
+        }, 2400);
 
-    /* 🏆 STAGE 4: success banner slides down */
-    const banner = document.createElement('div');
-    banner.className = 'success-banner';
-    banner.textContent = '🏆 Message delivered successfully!';
-    document.body.appendChild(banner);
-    setTimeout(() => banner.remove(), 2800);
-
-    statusEl.textContent = 'Message sent successfully. Thank you!';
-    statusEl.className = 'ok';
-    form.reset();
-
-    setTimeout(() => {
-        sendBtn.disabled = false;
-        sendBtn.innerHTML = 'Send Message →';
-        sendBtn.classList.remove('shake', 'glow');
-    }, 2400);
-
-} catch {
-    statusEl.textContent = 'Something went wrong — please email me directly.';
-    statusEl.className = 'err';
+    } catch {
+        statusEl.textContent = 'Something went wrong — please email me directly.';
+        statusEl.className = 'err';
         setTimeout(() => {
             sendBtn.disabled = false;
             sendBtn.innerHTML = 'Send Message →';
         }, 2200);
     }
 });
+</script>
 
-    </script>
 </body>
 
 </html>
