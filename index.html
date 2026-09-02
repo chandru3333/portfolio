@@ -52,15 +52,22 @@
             }
         }
 
-       @media(max-width:768px){
+@media(max-width:768px){
   .hero-wrap{flex-direction:column-reverse;text-align:center;gap:28px}
   .hero-photo{width:min(220px,55vw)}
   .hero-kicker{justify-content:center}
+  .hero-role{justify-content:center}
   .hero-cta{align-items:center}
+
+  /* ✅ NEW — keeps "Software Developer" on one clean line */
+  h1 .italic{
+    display: block;
+    font-size: clamp(1.3rem, 7vw, 2.4rem);
+    line-height: 1.15;
+    margin-top: 10px;
+    white-space: nowrap;
+  }
 }
-
-
-
         html.light {
             --bg: #F6F3EC;
             --surface: #FFFFFF;
