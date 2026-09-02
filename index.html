@@ -568,22 +568,24 @@ header{
             border-color: var(--accent)
         }
 
-        .proj .thumb {
-            height: 170px;
-            background: linear-gradient(135deg, var(--teal), var(--sand));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Fraunces', serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: rgba(255, 255, 255, .9);
-            transition: .3s
-        }
+/* ✅ image thumbnail */
+.proj .thumb {
+    height: 200px;
+    overflow: hidden;
+}
 
-        .proj:hover .thumb {
-            letter-spacing: .06em
-        }
+.proj .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .4s ease;
+}
+
+.proj:hover .thumb img {
+    transform: scale(1.06);
+}
+
 
         .proj .body {
             padding: 26px 26px 30px
@@ -1255,11 +1257,10 @@ form {
                 grid-template-columns: 1fr;
                 gap: 18px;
             }
+.proj .thumb {
+    height: 150px;
+}
 
-            .proj .thumb {
-                height: 140px;
-                font-size: 1.8rem;
-            }
 			.social-grid {
   			  grid-template-columns: 1fr;
    			  gap: 16px;
@@ -1768,30 +1769,41 @@ footer {
         <div class="sec-label reveal">02 — Selected Work</div>
         <h2 class="reveal">Projects I'm proud of.</h2>
         <div class="proj-grid">
-            <a class="proj reveal" href="https://your-project-link.com" target="_blank" rel="noopener">
-                <div class="thumb">01</div>
-                <div class="body">
-                    <div class="tag">JAVA · MYSQL</div>
-                    <h3>Attendance Management System - CLI</h3>
-                    <p>Built a desktop app via JDBC to automate student tracking, reducing administrative effort by 80% with 100% accuracy across 500+ records.</p>
-                </div>
-            </a>
-            <a class="proj reveal" href="https://your-project-link.com" target="_blank" rel="noopener">
-                <div class="thumb">02</div>
-                <div class="body">
-                    <div class="tag">CORE JAVA · OOP & ALGORITHMS</div>
-                    <h3>Tic Tac Toe Game Engine - CLI</h3>
-                    <p>Architected a modular two-player console game with object-oriented design and a 2D array traversal algorithm for real-time win detection.</p>
-                </div>
-            </a>
-            <a class="proj reveal" href="https://your-project-link.com" target="_blank" rel="noopener">
-                <div class="thumb">03</div>
-                <div class="body">
-                    <div class="tag">CRM · AUTOMATION</div>
-                    <h3>Salesforce Workflow Automation</h3>
-                    <p>Developed custom Apex triggers and workflow automation rules, reducing manual CRM data entry by ~70%.  </p>
-                </div>
-            </a>
+            <!-- Project 1 -->
+<a class="proj reveal" href="https://your-project-link.com" target="_blank" rel="noopener">
+    <div class="thumb">
+        <img src="project1.jpg" alt="Attendance Management System">
+    </div>
+    <div class="body">
+        <div class="tag">JAVA · MYSQL</div>
+        <h3>Attendance Management System - CLI</h3>
+        <p>Built a desktop app via JDBC to automate student tracking, reducing administrative effort by 80% with 100% accuracy across 500+ records.</p>
+    </div>
+</a>
+
+<!-- Project 2 -->
+<a class="proj reveal" href="https://your-project-link.com" target="_blank" rel="noopener">
+    <div class="thumb">
+        <img src="project2.jpg" alt="Tic Tac Toe Game Engine">
+    </div>
+    <div class="body">
+        <div class="tag">CORE JAVA · OOP & ALGORITHMS</div>
+        <h3>Tic Tac Toe Game Engine - CLI</h3>
+        <p>Architected a modular two-player console game with object-oriented design and a 2D array traversal algorithm for real-time win detection.</p>
+    </div>
+</a>
+
+<!-- Project 3 -->
+<a class="proj reveal" href="https://your-project-link.com" target="_blank" rel="noopener">
+    <div class="thumb">
+        <img src="project3.jpg" alt="Salesforce Workflow Automation">
+    </div>
+    <div class="body">
+        <div class="tag">CRM · AUTOMATION</div>
+        <h3>Salesforce Workflow Automation</h3>
+        <p>Developed custom Apex triggers and workflow automation rules, reducing manual CRM data entry by ~70%.</p>
+    </div>
+</a>
         </div>
     </section>
 
