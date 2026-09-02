@@ -1451,6 +1451,14 @@ form {
 footer {
     margin-top: 0 !important;
 }
+.theme-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:42px;height:42px;border-radius:50%;
+    background:transparent;border:2px solid var(--ink);
+    font-size:1.1rem;cursor:pointer;transition:.25s;
+}
+.theme-btn:hover{border-color:var(--accent);transform:rotate(20deg)}
+@media(max-width:900px){ .theme-btn{display:none} } /* mobile uses burger-menu button */
 
 
     </style>
@@ -1471,6 +1479,11 @@ footer {
             <li><a href="#connect">Socials</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
+		<div class="nav-right" style="display:flex;align-items:center;gap:16px;">
+   			 <button class="theme-btn" id="themeToggleDesk" aria-label="Toggle theme">🌙</button>
+   			 <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+		</div>
+
         <div class="nav-right">
             <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
         </div>
@@ -1769,20 +1782,20 @@ footer {
 
     <script>
         /* ================= THEME — works from burger menu ================= */
-        const htmlEl = document.documentElement;
-        const themeBtnMenu = document.getElementById('themeToggleMenu');
+const themeBtnMenu = document.getElementById('themeToggleMenu');
+const themeBtnDesk = document.getElementById('themeToggleDesk');
 
-        function applyTheme(dark) {
-            htmlEl.classList.toggle('light', !dark);
-            themeBtnMenu.textContent = (dark ? '☀️' : '🌙') + ' Theme';
-            localStorage.setItem('theme', dark ? 'dark' : 'light');
-        }
-        applyTheme(localStorage.getItem('theme') !== 'light');
+function applyTheme(dark) {
+    htmlEl.classList.toggle('light', !dark);
+    themeBtnMenu.textContent = (dark ? '☀️' : '🌙') + ' Theme';
+    if (themeBtnDesk) themeBtnDesk.textContent = dark ? '☀️' : '🌙';
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+}
+applyTheme(localStorage.getItem('theme') !== 'light');
 
-        themeBtnMenu.addEventListener('click', function(e) {
-            e.stopPropagation();
-            applyTheme(htmlEl.classList.contains('light'));
-        });
+themeBtnMenu.addEventListener('click', e => { e.stopPropagation(); applyTheme(htmlEl.classList.contains('light')); });
+themeBtnDesk.addEventListener('click', () => applyTheme(htmlEl.classList.contains('light')));
+
 
         /* ================= MOBILE MENU ================= */
         const burger = document.getElementById('burger');
@@ -1911,7 +1924,7 @@ function confettiBurst(btn){
 // ---- Copy email ----
 const copyBtn = document.getElementById('copyEmail');
 copyBtn.addEventListener('click', () => {
-  navigator.clipboard.writeText('yourname@email.com').then(() => {
+  navigator.clipboard.writeText('mrbchandru2003@gmail.com').then(() => {
     const original = copyBtn.innerHTML;
     copyBtn.classList.add('btn-feedback');
     copyBtn.innerHTML = '<span class="emoji">🎉</span> Copied! Yay!';
@@ -1951,7 +1964,7 @@ dlBtn.addEventListener('click', () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Arjun_Mehta_Resume.pdf';
+      a.download = 'B_Chandru_Resume.pdf';
       document.body.appendChild(a);
       a.click();
       a.remove();
