@@ -1748,6 +1748,55 @@ footer {
         padding: 24px 22px;
     }
 }
+/* ---------- AWARD PHOTO GALLERY (grayscale interactive) ---------- */
+.award-gallery {
+    overflow: hidden;
+    padding: 40px 0;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    cursor: grab;
+}
+
+.award-gallery:active { cursor: grabbing; }
+
+.award-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: awardScroll 50s linear infinite;
+}
+
+.award-gallery:hover .award-track { animation-play-state: paused; }
+
+.award-track img {
+    width: 250px;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    filter: grayscale(60%);
+    transition: .4s;
+}
+
+.award-track img:hover {
+    filter: grayscale(0%);
+    transform: scale(1.06);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent), 0 14px 32px rgba(0,0,0,.3);
+}
+
+@keyframes awardScroll { to { transform: translateX(-50%); } }
+
+@media(max-width:768px) {
+    .award-track img {
+        width: 170px;
+        height: 120px;
+        filter: none;    /* keep color on mobile since no hover */
+        border-radius: 12px;
+    }
+    .award-gallery { padding: 24px 0; }
+}
 
 
     </style>
@@ -2055,6 +2104,31 @@ footer {
         </a>
     </div>
 </section>
+
+	<!-- 08 — AWARDS GALLERY -->
+<section id="awards" style="padding-bottom:30px">
+    <div class="sec-label reveal">08 — Moments & Achievements</div>
+    <h2 class="reveal">A few proud moments.</h2>
+</section>
+
+<div class="award-gallery">
+    <div class="award-track">
+        <!-- your real photos — replace filenames -->
+        <img src="award1.jpg" alt="Award 1" loading="lazy">
+        <img src="award2.jpg" alt="Prize" loading="lazy">
+        <img src="award3.jpg" alt="Medal" loading="lazy">
+        <img src="award4.jpg" alt="Certificate" loading="lazy">
+        <img src="award5.jpg" alt="Trophy" loading="lazy">
+        <img src="award6.jpg" alt="Competition" loading="lazy">
+        <!-- duplicate set — REQUIRED for seamless infinite loop (alt="" so screen readers skip) -->
+        <img src="award1.jpg" alt="">
+        <img src="award2.jpg" alt="">
+        <img src="award3.jpg" alt="">
+        <img src="award4.jpg" alt="">
+        <img src="award5.jpg" alt="">
+        <img src="award6.jpg" alt="">
+    </div>
+</div>
 
 
     <!-- 06 — SOCIALS -->
