@@ -1748,7 +1748,7 @@ footer {
         padding: 24px 22px;
     }
 }
-		/* ---------- AWARD PHOTO GALLERY ---------- */
+/* ---------- AWARD GALLERY (seamless infinite loop) ---------- */
 .award-gallery {
     overflow: hidden;
     width: 100%;
@@ -1761,8 +1761,8 @@ footer {
 .award-track {
     display: flex;
     width: max-content;
-    animation: awardScroll 40s linear infinite;
     will-change: transform;
+    animation: awardScroll 40s linear infinite;
 }
 
 .award-gallery:hover .award-track {
@@ -1778,6 +1778,7 @@ footer {
     border-radius: 18px;
     border: 1px solid var(--line);
     margin-right: 24px;
+    background: rgba(255, 255, 255, .05);
     transition: transform .4s, border-color .4s;
 }
 
@@ -1788,17 +1789,17 @@ footer {
 
 @keyframes awardScroll {
     from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    to   { transform: translateX(calc(-1 * var(--shift, 0px))); }
 }
 
 @media (max-width: 768px) {
+    .award-gallery { padding: 24px 0; }
     .award-track img {
         width: 240px;
         height: 170px;
         margin-right: 16px;
         border-radius: 12px;
     }
-    .award-gallery { padding: 24px 0; }
 }
 
 
@@ -2102,25 +2103,21 @@ footer {
 </section>
 
 	<!-- 08 — AWARDS GALLERY -->
+<!-- 08 — AWARDS GALLERY -->
 <section id="awards" style="padding-bottom:30px">
     <div class="sec-label reveal">07 — Moments & Achievements</div>
     <h2 class="reveal">A few proud moments.</h2>
 </section>
 
 <div class="award-gallery">
-    <div class="award-track">
+    <div class="award-track" id="awardTrack">
         <img src="award1.jpg" alt="Award 1">
-        <img src="award2.jpg" alt="Prize">
-        <img src="award3.jpg" alt="Medal">
-        <img src="award4.jpg" alt="Certificate">
-        <img src="award5.jpg" alt="Trophy">
-        <img src="award6.jpg" alt="Competition">
-        <img src="award1.jpg" alt="" aria-hidden="true">
-        <img src="award2.jpg" alt="" aria-hidden="true">
-        <img src="award3.jpg" alt="" aria-hidden="true">
-        <img src="award4.jpg" alt="" aria-hidden="true">
-        <img src="award5.jpg" alt="" aria-hidden="true">
-        <img src="award6.jpg" alt="" aria-hidden="true">
+        <img src="award2.jpg" alt="Award 2">
+        <img src="award3.jpg" alt="Award 3">
+        <img src="award4.jpg" alt="Award 4">
+        <img src="award5.jpg" alt="Award 5">
+        <img src="award6.jpg" alt="Award 6">
+	    <img src="award7.jpg" alt="Award 7">
     </div>
 </div>
 
@@ -2389,6 +2386,72 @@ function setupDownload(btnId) {
 }
 setupDownload('downloadResume');
 setupDownload('heroResume');
+
+
+	/* ============ AWARD GALLERY — seamless infinite loop ============ */
+(function () {
+    const track = document.getElementById('awardTrack');
+    if (!track) return;
+
+    function gap() {
+        return parseFloat(getComputedStyle(track.querySelector('img')).marginRight) || 0;
+    }
+
+    async function buildLoop() {
+        // remove old clones
+        [...track.querySelectorAll('.clone')].forEach(c => c.remove());
+
+        const originals = [...track.children];
+        if (!originals.length) return;
+
+        // wait for every image to ACTUALLY load (has real pixels)
+        await Promise.all(originals.map(img =>
+            img.naturalWidth > 0
+                ? Promise.resolve()
+                : new Promise(res => {
+                    img.addEventListener('load', res, { once: true });
+                    img.addEventListener('error', res, { once: true });
+                })
+        ));
+
+        // exact width of ONE full set (images + gaps)
+        const setWidth = originals.reduce((w, img) => w + img.offsetWidth + gap(), 0);
+        if (!setWidth) return;
+
+        // add enough copies to cover the screen + 1 full extra set
+        const copies = Math.ceil((window.innerWidth + setWidth) / setWidth) + 1;
+        for (let i = 1; i < copies; i++) {
+            originals.forEach(img => {
+                const c = img.cloneNode(true);
+                c.classList.add('clone');
+                c.setAttribute('aria-hidden', 'true');
+                track.appendChild(c);
+            });
+        }
+
+        // pixel-exact shift = exactly one set → zero visible jump
+        track.style.setProperty('--shift', setWidth + 'px');
+
+        // restart animation cleanly with speed proportional to width
+        track.style.animation = 'none';
+        void track.offsetWidth;
+        track.style.animation =
+            `awardScroll ${Math.max(setWidth / 60, 15)}s linear infinite`;
+    }
+
+    // rebuild on resize (debounced)
+    let rt;
+    window.addEventListener('resize', () => {
+        clearTimeout(rt);
+        rt = setTimeout(buildLoop, 200);
+    });
+
+    buildLoop();
+})();
+
+
+
+/* ============ CONTACT FORM — WEB3FORMS ============ */
 
 
 /* ============ CONTACT FORM — WEB3FORMS ============ */
