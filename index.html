@@ -2389,6 +2389,7 @@ setupDownload('heroResume');
 
 
 	/* ============ AWARD GALLERY — seamless infinite loop ============ */
+/* ============ AWARD GALLERY — seamless infinite loop (mobile-safe) ============ */
 (function () {
     const track = document.getElementById('awardTrack');
     if (!track) return;
@@ -2398,13 +2399,11 @@ setupDownload('heroResume');
     }
 
     async function buildLoop() {
-        // remove old clones
         [...track.querySelectorAll('.clone')].forEach(c => c.remove());
 
         const originals = [...track.children];
         if (!originals.length) return;
 
-        // wait for every image to ACTUALLY load (has real pixels)
         await Promise.all(originals.map(img =>
             img.naturalWidth > 0
                 ? Promise.resolve()
@@ -2414,11 +2413,9 @@ setupDownload('heroResume');
                 })
         ));
 
-        // exact width of ONE full set (images + gaps)
         const setWidth = originals.reduce((w, img) => w + img.offsetWidth + gap(), 0);
         if (!setWidth) return;
 
-        // add enough copies to cover the screen + 1 full extra set
         const copies = Math.ceil((window.innerWidth + setWidth) / setWidth) + 1;
         for (let i = 1; i < copies; i++) {
             originals.forEach(img => {
@@ -2429,22 +2426,30 @@ setupDownload('heroResume');
             });
         }
 
-        // pixel-exact shift = exactly one set → zero visible jump
         track.style.setProperty('--shift', setWidth + 'px');
-
-        // restart animation cleanly with speed proportional to width
         track.style.animation = 'none';
         void track.offsetWidth;
         track.style.animation =
             `awardScroll ${Math.max(setWidth / 60, 15)}s linear infinite`;
     }
 
-    // rebuild on resize (debounced)
+    // --- mobile-safe rebuild logic ---
+    let lastWidth = window.innerWidth;
     let rt;
-    window.addEventListener('resize', () => {
+
+    function maybeRebuild() {
+        const w = window.innerWidth;
+        // ignore URL-bar show/hide (height-only changes)
+        // only rebuild when width changes by more than 50px
+        if (Math.abs(w - lastWidth) < 50) return;
+        lastWidth = w;
         clearTimeout(rt);
-        rt = setTimeout(buildLoop, 200);
-    });
+        // wait until user stops scrolling / rotating
+        rt = setTimeout(buildLoop, 300);
+    }
+
+    window.addEventListener('resize', maybeRebuild, { passive: true });
+    window.addEventListener('orientationchange', maybeRebuild, { passive: true });
 
     buildLoop();
 })();
