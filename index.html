@@ -1748,7 +1748,7 @@ footer {
         padding: 24px 22px;
     }
 }
-/* ---------- AWARD PHOTO GALLERY (grayscale interactive) ---------- */
+/* ---------- AWARD PHOTO GALLERY ---------- */
 .award-gallery {
     overflow: hidden;
     padding: 50px 0;
@@ -1762,35 +1762,30 @@ footer {
 
 .award-track {
     display: flex;
-    gap: 24px;
-    width: max-content;
-    animation: awardScroll 40s linear infinite;   /* slower so big photos feel smooth */
+    width: max-content;                          /* ✅ required */
+    animation: awardScroll 50s linear infinite;  /* ✅ linear = never reverses */
+    will-change: transform;
 }
 
 .award-gallery:hover .award-track { animation-play-state: paused; }
 
 .award-track img {
-    width: 400px;          /* ← was 250px — much bigger */
-    height: 280px;         /* ← was 170px */
+    width: 400px;
+    height: 280px;
     object-fit: cover;
     border-radius: 18px;
     border: 1px solid var(--line);
     transition: .4s;
-}
-
-.award-track img:hover {
-    transform: scale(1.05);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px var(--accent), 0 14px 32px rgba(0,0,0,.3);
+    margin-right: 24px;      /* ✅ margin, NOT gap */
 }
 
 @keyframes awardScroll { to { transform: translateX(-50%); } }
 
 @media(max-width:768px) {
     .award-track img {
-        width: 240px;      /* ← was 170px */
-        height: 170px;     /* ← was 120px */
-        filter: none;
+        width: 240px;
+        height: 170px;
+        margin-right: 16px;
         border-radius: 12px;
     }
     .award-gallery { padding: 24px 0; }
