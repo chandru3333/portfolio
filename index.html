@@ -1748,40 +1748,50 @@ footer {
         padding: 24px 22px;
     }
 }
-/* ---------- AWARD PHOTO GALLERY ---------- */
+		/* ---------- AWARD PHOTO GALLERY ---------- */
 .award-gallery {
     overflow: hidden;
+    width: 100%;
     padding: 50px 0;
     background: var(--surface);
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    cursor: grab;
 }
-
-.award-gallery:active { cursor: grabbing; }
 
 .award-track {
     display: flex;
-    width: max-content;                          /* ✅ required */
-    animation: awardScroll 50s linear infinite;  /* ✅ linear = never reverses */
+    width: max-content;
+    animation: awardScroll 40s linear infinite;
     will-change: transform;
 }
 
-.award-gallery:hover .award-track { animation-play-state: paused; }
+.award-gallery:hover .award-track {
+    animation-play-state: paused;
+}
 
 .award-track img {
+    flex: 0 0 auto;
     width: 400px;
     height: 280px;
+    max-width: none;
     object-fit: cover;
     border-radius: 18px;
     border: 1px solid var(--line);
-    transition: .4s;
-    margin-right: 24px;      /* ✅ margin, NOT gap */
+    margin-right: 24px;
+    transition: transform .4s, border-color .4s;
 }
 
-@keyframes awardScroll { to { transform: translateX(-50%); } }
+.award-track img:hover {
+    transform: scale(1.05);
+    border-color: var(--accent);
+}
 
-@media(max-width:768px) {
+@keyframes awardScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+@media (max-width: 768px) {
     .award-track img {
         width: 240px;
         height: 170px;
@@ -2099,22 +2109,21 @@ footer {
 
 <div class="award-gallery">
     <div class="award-track">
-        <!-- your real photos — replace filenames -->
-        <img src="award1.jpg" alt="Award 1" loading="lazy">
-        <img src="award2.jpg" alt="Prize" loading="lazy">
-        <img src="award3.jpg" alt="Medal" loading="lazy">
-        <img src="award4.jpg" alt="Certificate" loading="lazy">
-        <img src="award5.jpg" alt="Trophy" loading="lazy">
-        <img src="award6.jpg" alt="Competition" loading="lazy">
-        <!-- duplicate set — REQUIRED for seamless infinite loop (alt="" so screen readers skip) -->
-        <img src="award1.jpg" alt="">
-        <img src="award2.jpg" alt="">
-        <img src="award3.jpg" alt="">
-        <img src="award4.jpg" alt="">
-        <img src="award5.jpg" alt="">
-        <img src="award6.jpg" alt="">
+        <img src="award1.jpg" alt="Award 1">
+        <img src="award2.jpg" alt="Prize">
+        <img src="award3.jpg" alt="Medal">
+        <img src="award4.jpg" alt="Certificate">
+        <img src="award5.jpg" alt="Trophy">
+        <img src="award6.jpg" alt="Competition">
+        <img src="award1.jpg" alt="" aria-hidden="true">
+        <img src="award2.jpg" alt="" aria-hidden="true">
+        <img src="award3.jpg" alt="" aria-hidden="true">
+        <img src="award4.jpg" alt="" aria-hidden="true">
+        <img src="award5.jpg" alt="" aria-hidden="true">
+        <img src="award6.jpg" alt="" aria-hidden="true">
     </div>
 </div>
+
 
 
     <!-- 06 — SOCIALS -->
@@ -2380,6 +2389,7 @@ function setupDownload(btnId) {
 }
 setupDownload('downloadResume');
 setupDownload('heroResume');
+
 
 /* ============ CONTACT FORM — WEB3FORMS ============ */
 const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
