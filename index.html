@@ -9,7 +9,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Coolors palette: 264653 · 2A9D8F · E9C46A · F4A261 · E76F51 */
+            /* LIGHT THEME (default) */
+            --bg: #F6F3EC;
+            --surface: #FFFFFF;
+            --ink: #264653;
+            --muted: #5C7370;
+            --accent: #E76F51;
+            --accent2: #C98A1B;
+            --teal: #2A9D8F;
+            --sand: #F4A261;
+            --line: rgba(38, 70, 83, .14);
+        }
+
+        html.dark {
+            /* DARK THEME (toggle) */
             --bg: #264653;
             --surface: #1B333B;
             --ink: #F3EFE4;
@@ -20,6 +33,7 @@
             --sand: #F4A261;
             --line: rgba(243, 239, 228, .14);
         }
+
 
 .hero-wrap {
     display: flex;
@@ -2196,12 +2210,14 @@ const themeBtnMenu = document.getElementById('themeToggleMenu');
 const themeBtnDesk = document.getElementById('themeToggleDesk');
 
 function applyTheme(dark) {
-    htmlEl.classList.toggle('light', !dark);
+    htmlEl.classList.toggle('dark', dark);
     if (themeBtnMenu) themeBtnMenu.textContent = (dark ? '☀️' : '🌙') + ' Theme';
     if (themeBtnDesk) themeBtnDesk.textContent = dark ? '☀️' : '🌙';
     localStorage.setItem('theme', dark ? 'dark' : 'light');
 }
-applyTheme(localStorage.getItem('theme') !== 'light');
+// default = light, unless user previously chose dark
+applyTheme(localStorage.getItem('theme') === 'dark');
+
 
 function toggleTheme(e) {
     if (e) e.stopPropagation();
