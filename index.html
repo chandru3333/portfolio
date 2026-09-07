@@ -204,7 +204,7 @@ h1 .italic {
 /* ✅ UPDATED — pushes links right, next to the burger */
 nav ul {
     display: flex;
-    gap: 26px;
+    gap: 18px;
     list-style: none;
     margin-left: auto;   /* pushes the link group to the right */
     margin-right: 24px;  /* breathing room before the burger */
@@ -213,7 +213,7 @@ nav ul {
         nav a {
             color: var(--ink);
             text-decoration: none;
-            font-size: .82rem;
+            font-size: .78rem;
             text-transform: uppercase;
             letter-spacing: .14em;
             position: relative
@@ -1807,13 +1807,15 @@ footer {
     <nav id="mainNav">
         <a class="logo" href="#top">B Chandru<span style="color:var(--accent)">.</span></a>
         <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#education">Education</a></li>
-            <li><a href="#connect">Socials</a></li>
-            <li><a href="#contact">Contact</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#certificates">Certificates</a></li>   <!-- ✅ NEW -->
+        <li><a href="#awards">Awards</a></li>               <!-- ✅ NEW -->
+        <li><a href="#connect">Socials</a></li>
+        <li><a href="#contact">Contact</a></li>
         </ul>
 		<div class="nav-right" style="display:flex;align-items:center;gap:16px;">
    			 <button class="theme-btn" id="themeToggleDesk" aria-label="Toggle theme">🌙</button>
@@ -1822,14 +1824,16 @@ footer {
     </nav>
 
     <div class="mobile-menu" id="mobileMenu">
-        <a href="#top">Home</a>
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#experience">Experience</a>
-        <a href="#skills">Skills</a>
-        <a href="#education">Education</a>
-        <a href="#connect">Socials</a>
-        <a href="#contact">Contact</a>
+    <a href="#top">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#education">Education</a>
+    <a href="#certificates">Certificates</a>   <!-- ✅ NEW -->
+    <a href="#awards">Awards</a>               <!-- ✅ NEW -->
+    <a href="#connect">Socials</a>
+    <a href="#contact">Contact</a>
         <button class="menu-theme" id="themeToggleMenu">🌙 Theme</button>
     </div>
 
@@ -2094,7 +2098,7 @@ footer {
 
 	<!-- 08 — AWARDS GALLERY -->
 <section id="awards" style="padding-bottom:30px">
-    <div class="sec-label reveal">08 — Moments & Achievements</div>
+    <div class="sec-label reveal">07 — Moments & Achievements</div>
     <h2 class="reveal">A few proud moments.</h2>
 </section>
 
@@ -2121,7 +2125,7 @@ footer {
     <!-- 06 — SOCIALS -->
     <!-- 06 — SOCIALS -->
 <section id="connect">
-    <div class="sec-label reveal">06 — Find Me Online</div>
+    <div class="sec-label reveal">08 — Find Me Online</div>
     <h2 class="reveal">Let's connect everywhere.</h2>
     <div class="social-grid">
         <a class="social-card reveal" href="https://linkedin.com/in/mrbchandru2003" target="_blank" rel="noopener">
@@ -2157,7 +2161,7 @@ footer {
 
     <!-- 07 — CONTACT -->
     <section id="contact">
-        <div class="sec-label reveal" style="justify-content:center">07 — Contact</div>
+        <div class="sec-label reveal" style="justify-content:center">09 — Contact</div>
         <h2 class="reveal">Let's build something<br><em>worth remembering.</em></h2>
         <p class="lead reveal">Have a role, a project, or just a good idea? Drop a message — it lands directly in my inbox.</p>
         <div class="contact-actions reveal">
