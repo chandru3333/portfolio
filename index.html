@@ -2211,20 +2211,26 @@ const themeBtnDesk = document.getElementById('themeToggleDesk');
 
 function applyTheme(dark) {
     htmlEl.classList.toggle('dark', dark);
+    htmlEl.classList.toggle('light', !dark);   // keep classes explicit
     if (themeBtnMenu) themeBtnMenu.textContent = (dark ? '☀️' : '🌙') + ' Theme';
     if (themeBtnDesk) themeBtnDesk.textContent = dark ? '☀️' : '🌙';
     localStorage.setItem('theme', dark ? 'dark' : 'light');
 }
-// default = light, unless user previously chose dark
-applyTheme(localStorage.getItem('theme') === 'dark');
 
-
+/* ============ FIXED TOGGLE (this was the bug) ============ */
 function toggleTheme(e) {
     if (e) e.stopPropagation();
-    applyTheme(htmlEl.classList.contains('light'));
+    const nowDark = !htmlEl.classList.contains('dark');   // ✅ check 'dark', not 'light'
+    applyTheme(nowDark);
 }
+
 if (themeBtnMenu) themeBtnMenu.addEventListener('click', toggleTheme);
 if (themeBtnDesk) themeBtnDesk.addEventListener('click', toggleTheme);
+
+/* ============ STARTUP ============
+   Default: LIGHT theme.
+   Only go dark if the user themselves chose dark before. */
+applyTheme(localStorage.getItem('theme') === 'dark');
 
 /* ============ MOBILE MENU ============ */
 const burger = document.getElementById('burger');
